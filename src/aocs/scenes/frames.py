@@ -97,5 +97,12 @@ class CoordinateFrames(ThreeDScene):
             about_point=ORIGIN,
         )
 
+        self.rotate_about_inertial_axis(
+            body_frame,
+            axis=(2 * RIGHT) + (2 * UP) + OUT,
+            angle=TAU,
+            about_point=ORIGIN,
+        )
+
         # final wait
         self.wait(2)
