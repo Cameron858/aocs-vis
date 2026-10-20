@@ -51,19 +51,19 @@ class CoordinateFrames(ThreeDScene):
         body_cube = Cube(side_length=0.5).move_to(body_origin)
         self.play(FadeIn(body_cube, scale=0.1))
 
-        body_vectors = []
-        for direction, color in (
-            (RIGHT, RED),
-            (UP, GREEN),
-            (OUT, BLUE),
-        ):
-            body_vector = Arrow3D(
+        body_vectors = [
+            Arrow3D(
                 start=body_origin,
                 end=body_origin + direction,
                 color=color,
             )
-            self.play(Create(body_vector))
-            body_vectors.append(body_vector)
+            for direction, color in (
+                (RIGHT, RED),
+                (UP, GREEN),
+                (OUT, BLUE),
+            )
+        ]
+        self.play(*(Create(body_vector) for body_vector in body_vectors))
 
         body_frame = VGroup(body_cube, *body_vectors)
         self.play(
