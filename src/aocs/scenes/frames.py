@@ -2,6 +2,26 @@ from manim import *
 
 
 class CoordinateFrames(ThreeDScene):
+    def rotate_about_inertial_axis(
+        self,
+        mobject,
+        axis,
+        angle=TAU,
+        about_point=ORIGIN,
+        axis_length=5,
+        run_time=4,
+        pause=0.5,
+    ):
+        axis = normalize(axis)
+        axis_line = DashedLine(about_point, about_point + axis_length * axis)
+        self.play(Create(axis_line))
+        self.play(
+            Rotate(mobject, angle=angle, axis=axis, about_point=about_point),
+            run_time=run_time,
+        )
+        self.wait(pause)
+        self.play(FadeOut(axis_line))
+
     def construct(self):
         self.set_camera_orientation(phi=75 * DEGREES, theta=-45 * DEGREES)
         axes = ThreeDAxes()
@@ -22,7 +42,7 @@ class CoordinateFrames(ThreeDScene):
         ]
         self.play(
             *(Create(sweep) for _, _, sweep in axis_color_sweeps),
-            run_time=0.2,
+            run_time=0.75,
         )
         self.play(
             *(axis.animate.set_color(color) for axis, color, _ in axis_color_sweeps),
@@ -65,22 +85,12 @@ class CoordinateFrames(ThreeDScene):
         ]
         self.play(*(Create(body_vector) for body_vector in body_vectors))
 
-        rotation_axis = normalize(RIGHT + UP + OUT)
-        rotation_axis_line = DashedLine(
-            ORIGIN,
-            ORIGIN + 5 * rotation_axis,
-        )
-        self.play(Create(rotation_axis_line))
-
         body_frame = VGroup(body_cube, *body_vectors)
-        self.play(
-            Rotate(
-                body_frame,
-                angle=TAU,
-                axis=rotation_axis,
-                about_point=ORIGIN,
-            ),
-            run_time=4,
+        self.rotate_about_inertial_axis(
+            body_frame,
+            axis=RIGHT + UP + OUT,
+            angle=TAU,
+            about_point=ORIGIN,
         )
 
         # final wait
