@@ -22,7 +22,6 @@ class CoordinateFrames(ThreeDScene):
                 FadeOut(color_sweep),
                 run_time=0.2,
             )
-        self.wait()
 
         x_label = Text("X", color=RED).move_to(axes.x_axis.get_end() + 0.3 * RIGHT)
         y_label = Text("Y", color=GREEN).move_to(axes.y_axis.get_end() + 0.3 * UP)
