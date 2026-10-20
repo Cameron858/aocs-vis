@@ -22,7 +22,7 @@ class CoordinateFrames(ThreeDScene):
         ]
         self.play(
             *(Create(sweep) for _, _, sweep in axis_color_sweeps),
-            run_time=1,
+            run_time=0.2,
         )
         self.play(
             *(axis.animate.set_color(color) for axis, color, _ in axis_color_sweeps),
@@ -67,8 +67,8 @@ class CoordinateFrames(ThreeDScene):
 
         rotation_axis = normalize(RIGHT + UP + OUT)
         rotation_axis_line = DashedLine(
-            body_origin - 3 * rotation_axis,
-            body_origin + 3 * rotation_axis,
+            ORIGIN,
+            ORIGIN + 5 * rotation_axis,
         )
         self.play(Create(rotation_axis_line))
 
@@ -78,7 +78,7 @@ class CoordinateFrames(ThreeDScene):
                 body_frame,
                 angle=TAU,
                 axis=rotation_axis,
-                about_point=body_origin,
+                about_point=ORIGIN,
             ),
             run_time=4,
         )
