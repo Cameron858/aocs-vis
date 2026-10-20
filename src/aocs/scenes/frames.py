@@ -2,6 +2,12 @@ from manim import *
 
 
 class CoordinateFrames(ThreeDScene):
+    def rotate_camera(self):
+        RATE = 1.5
+        self.begin_ambient_camera_rotation(RATE)
+        self.wait(TAU / RATE)
+        self.stop_ambient_camera_rotation()
+
     def rotate_about_inertial_axis(
         self,
         mobject,
@@ -42,7 +48,7 @@ class CoordinateFrames(ThreeDScene):
         ]
         self.play(
             *(Create(sweep) for _, _, sweep in axis_color_sweeps),
-            run_time=0.75,
+            run_time=1,
         )
         self.play(
             *(axis.animate.set_color(color) for axis, color, _ in axis_color_sweeps),
@@ -58,13 +64,6 @@ class CoordinateFrames(ThreeDScene):
             .move_to(axes.z_axis.get_end() + 0.3 * OUT)
         )
         self.play(FadeIn(x_label, y_label, z_label))
-        self.wait()
-
-        RATE = 1.5
-        self.begin_ambient_camera_rotation(RATE)
-        self.wait(TAU / RATE)
-        self.stop_ambient_camera_rotation()
-
         self.wait()
 
         body_origin = 2 * RIGHT + 2 * UP + 2 * OUT
