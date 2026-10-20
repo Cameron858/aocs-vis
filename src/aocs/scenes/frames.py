@@ -42,7 +42,7 @@ class CoordinateFrames(ThreeDScene):
 
         RATE = 1.5
         self.begin_ambient_camera_rotation(RATE)
-        self.wait(2 * PI / RATE)
+        self.wait(2 * TAU / RATE)
         self.stop_ambient_camera_rotation()
 
         self.wait()
@@ -65,12 +65,19 @@ class CoordinateFrames(ThreeDScene):
         ]
         self.play(*(Create(body_vector) for body_vector in body_vectors))
 
+        rotation_axis = normalize(RIGHT + UP + OUT)
+        rotation_axis_line = DashedLine(
+            body_origin - 3 * rotation_axis,
+            body_origin + 3 * rotation_axis,
+        )
+        self.play(Create(rotation_axis_line))
+
         body_frame = VGroup(body_cube, *body_vectors)
         self.play(
             Rotate(
                 body_frame,
                 angle=TAU,
-                axis=normalize(RIGHT + UP + OUT),
+                axis=rotation_axis,
                 about_point=body_origin,
             ),
             run_time=4,
