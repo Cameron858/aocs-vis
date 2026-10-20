@@ -18,6 +18,22 @@ class CoordinateFrames(ThreeDScene):
         self.play(FadeIn(x_label, y_label, z_label))
         self.wait(1)
 
+        for axis, label, color in (
+            (axes.x_axis, x_label, RED),
+            (axes.y_axis, y_label, GREEN),
+            (axes.z_axis, z_label, BLUE),
+        ):
+            color_sweep = Line(
+                axis.get_start(), axis.get_end(), color=color, stroke_width=4
+            )
+            self.play(Create(color_sweep), run_time=1)
+            self.play(
+                axis.animate.set_color(color),
+                label.animate.set_color(color),
+                FadeOut(color_sweep),
+                run_time=0.2,
+            )
+
         RATE = 2
         self.begin_ambient_camera_rotation(RATE)
         self.wait(2 * PI / RATE)
