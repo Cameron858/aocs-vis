@@ -42,7 +42,7 @@ class CoordinateFrames(ThreeDScene):
 
         RATE = 1.5
         self.begin_ambient_camera_rotation(RATE)
-        self.wait(2 * TAU / RATE)
+        self.wait(TAU / RATE)
         self.stop_ambient_camera_rotation()
 
         self.wait()
