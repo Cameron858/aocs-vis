@@ -34,7 +34,7 @@ class CoordinateFrames(ThreeDScene):
         self.play(FadeIn(x_label, y_label, z_label))
         self.wait()
 
-        RATE = 2
+        RATE = 1.5
         self.begin_ambient_camera_rotation(RATE)
         self.wait(2 * PI / RATE)
         self.stop_ambient_camera_rotation()
