@@ -51,6 +51,7 @@ class CoordinateFrames(ThreeDScene):
         body_cube = Cube(side_length=0.5).move_to(body_origin)
         self.play(FadeIn(body_cube, scale=0.1))
 
+        body_vectors = []
         for direction, color in (
             (RIGHT, RED),
             (UP, GREEN),
@@ -62,5 +63,18 @@ class CoordinateFrames(ThreeDScene):
                 color=color,
             )
             self.play(Create(body_vector))
+            body_vectors.append(body_vector)
 
+        body_frame = VGroup(body_cube, *body_vectors)
+        self.play(
+            Rotate(
+                body_frame,
+                angle=TAU,
+                axis=normalize(RIGHT + UP + OUT),
+                about_point=body_origin,
+            ),
+            run_time=4,
+        )
+
+        # final wait
         self.wait(2)
