@@ -82,7 +82,12 @@ class CoordinateFrames(ThreeDScene):
                 (OUT, BLUE),
             )
         ]
-        self.play(*(Create(body_vector) for body_vector in body_vectors))
+        self.play(
+            *(
+                GrowFromPoint(body_vector, point=body_origin)
+                for body_vector in body_vectors
+            )
+        )
 
         body_frame = VGroup(body_cube, *body_vectors)
         self.rotate_about_inertial_axis(
