@@ -1,17 +1,10 @@
 [project]
-name = "aocs-visualisation"
+name = "aocs"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
-    "manim>=0.22.0",
-    "numpy>=2.5.4",
-    "scipy>=1.18.1",
-]
+dependencies = ["manim>=0.22.0", "numpy>=2.5.4", "scipy>=1.18.1"]
 
 [dependency-groups]
-dev = [
-    "pytest>=9.1.1",
-    "ruff>=0.17.1",
-]
+dev = ["pytest>=9.1.1", "ruff>=0.17.1"]
