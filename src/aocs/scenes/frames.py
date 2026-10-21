@@ -56,10 +56,16 @@ class CoordinateFrames(ThreeDScene):
             run_time=0.2,
         )
 
-        x_label = Text("X", color=RED).move_to(axes.x_axis.get_end() + 0.3 * RIGHT)
-        y_label = Text("Y", color=GREEN).move_to(axes.y_axis.get_end() + 0.3 * UP)
+        x_label = (
+            MathTex(r"\epsilon_1")
+            .set_color(RED)
+            .move_to(axes.x_axis.get_end() + 0.3 * RIGHT)
+        )
+        y_label = MathTex(r"\epsilon_2", color=GREEN).move_to(
+            axes.y_axis.get_end() + 0.3 * UP
+        )
         z_label = (
-            Text("Z", color=BLUE)
+            MathTex(r"\epsilon_3", color=BLUE)
             .rotate(90 * DEGREES, axis=RIGHT)
             .move_to(axes.z_axis.get_end() + 0.3 * OUT)
         )
