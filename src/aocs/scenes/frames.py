@@ -28,6 +28,35 @@ class CoordinateFrames(ThreeDScene):
         self.wait(pause)
         self.play(FadeOut(axis_line))
 
+    def rotate_about_body_axis(
+        self,
+        mobject,
+        axis,
+        body_axes,
+        angle=TAU,
+        axis_length=5,
+        run_time=4,
+        pause=0.5,
+    ):
+        axis = normalize(
+            sum(
+                (
+                    component * normalize(body_axis.get_end() - body_axis.get_start())
+                    for component, body_axis in zip(axis, body_axes, strict=True)
+                ),
+                start=ORIGIN,
+            )
+        )
+        about_point = body_axes[0].get_start()
+        axis_line = DashedLine(about_point, about_point + axis_length * axis)
+        self.play(Create(axis_line))
+        self.play(
+            Rotate(mobject, angle=angle, axis=axis, about_point=about_point),
+            run_time=run_time,
+        )
+        self.wait(pause)
+        self.play(FadeOut(axis_line))
+
     def construct(self):
         self.set_camera_orientation(phi=75 * DEGREES, theta=-45 * DEGREES)
         axes = ThreeDAxes()
@@ -96,18 +125,30 @@ class CoordinateFrames(ThreeDScene):
         )
 
         body_frame = VGroup(body_cube, *body_vectors)
-        self.rotate_about_inertial_axis(
+        self.move_camera(
+            phi=75 * DEGREES,
+            theta=0 * DEGREES,
+            frame_center=body_origin,
+            run_time=1.5,
+        )
+        self.rotate_about_body_axis(
             body_frame,
-            axis=RIGHT + UP + OUT,
+            axis=[1, -1, 1],
+            body_axes=body_vectors,
             angle=TAU,
-            about_point=ORIGIN,
         )
 
-        self.rotate_about_inertial_axis(
+        self.move_camera(
+            phi=75 * DEGREES,
+            theta=45 * DEGREES,
+            frame_center=body_origin,
+            run_time=1.5,
+        )
+        self.rotate_about_body_axis(
             body_frame,
-            axis=(2 * RIGHT) + (2 * UP) + OUT,
+            axis=[0, 1, 1],
+            body_axes=body_vectors,
             angle=TAU,
-            about_point=ORIGIN,
         )
 
         # final wait
