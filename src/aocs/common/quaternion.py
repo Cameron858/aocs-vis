@@ -1,5 +1,5 @@
 from collections.abc import Iterator, Sequence
-from math import cos, hypot, sin
+from math import cos, hypot, isclose, sin
 from types import NotImplementedType
 
 
@@ -30,6 +30,15 @@ class Quaternion:
         return cls(*array)
 
     @classmethod
+    def from_vector(cls, vector: Sequence[int | float]) -> "Quaternion":
+        """Create a pure quaternion from a three-component vector."""
+        if len(vector) != 3:
+            raise ValueError("A vector must have exactly three components.")
+
+        x, y, z = vector
+        return cls(0, x, y, z)
+
+    @classmethod
     def from_axis_angle(cls, theta: float, axis: Sequence[int | float]) -> "Quaternion":
         """Create a rotation quaternion from an angle in radians and an axis."""
         if len(axis) != 3:
@@ -47,6 +56,22 @@ class Quaternion:
     def conjugate(self) -> "Quaternion":
         """Return the conjugate of this quaternion."""
         return Quaternion(self.scalar, -self.i, -self.j, -self.k)
+
+    def is_close(
+        self,
+        other: object,
+        *,
+        rel_tol: float = 1e-9,
+        abs_tol: float = 1e-9,
+    ) -> bool:
+        """Return whether all components are close within the given tolerances."""
+        if not isinstance(other, Quaternion):
+            return False
+
+        return all(
+            isclose(a, b, rel_tol=rel_tol, abs_tol=abs_tol)
+            for a, b in zip(self, other)
+        )
 
     def __mul__(self, other: object) -> "Quaternion | NotImplementedType":
         if not isinstance(other, Quaternion):
