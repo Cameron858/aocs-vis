@@ -17,8 +17,8 @@ class Quaternion:
 
     def __repr__(self) -> str:
         return (
-            f"Quaternion(scalar={self.scalar!r}, i={self.i!r}, "
-            f"j={self.j!r}, k={self.k!r})"
+            f"Quaternion(scalar={self.scalar:.4f}, i={self.i:.4f}, "
+            f"j={self.j:.4f}, k={self.k:.4f})"
         )
 
     def __iter__(self) -> Iterator[int | float]:
