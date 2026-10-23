@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from types import NotImplementedType
 
 
 class Quaternion:
@@ -25,15 +26,18 @@ class Quaternion:
         """Return the conjugate of this quaternion."""
         return Quaternion(self.scalar, -self.i, -self.j, -self.k)
 
+    def __mul__(
+        self, other: object
+    ) -> "Quaternion | NotImplementedType":
+        if not isinstance(other, Quaternion):
+            return NotImplemented
 
-def product(p: Quaternion, q: Quaternion) -> Quaternion:
-    """Return the Hamilton product p * q."""
-    p0, p1, p2, p3 = p
-    q0, q1, q2, q3 = q
+        p0, p1, p2, p3 = self
+        q0, q1, q2, q3 = other
 
-    new_scalar = (p0 * q0) - (p1 * q1) - (p2 * q2) - (p3 * q3)
-    new_i = (p0 * q1) + (p1 * q0) + (p2 * q3) - (p3 * q2)
-    new_j = (p0 * q2) - (p1 * q3) + (p2 * q0) + (p3 * q1)
-    new_k = (p0 * q3) + (p1 * q2) - (p2 * q1) + (p3 * q0)
+        new_scalar = (p0 * q0) - (p1 * q1) - (p2 * q2) - (p3 * q3)
+        new_i = (p0 * q1) + (p1 * q0) + (p2 * q3) - (p3 * q2)
+        new_j = (p0 * q2) - (p1 * q3) + (p2 * q0) + (p3 * q1)
+        new_k = (p0 * q3) + (p1 * q2) - (p2 * q1) + (p3 * q0)
 
-    return Quaternion(new_scalar, new_i, new_j, new_k)
+        return Quaternion(new_scalar, new_i, new_j, new_k)
