@@ -1,13 +1,18 @@
 from collections.abc import Iterator
-from dataclasses import dataclass
 
 
-@dataclass
 class Quaternion:
-    scalar: int | float
-    i: int | float
-    j: int | float
-    k: int | float
+    def __init__(
+        self,
+        scalar: float,
+        i: float,
+        j: float,
+        k: float,
+    ) -> None:
+        self.scalar = scalar
+        self.i = i
+        self.j = j
+        self.k = k
 
     def __iter__(self) -> Iterator[int | float]:
         return iter((self.scalar, self.i, self.j, self.k))
@@ -15,6 +20,10 @@ class Quaternion:
     @classmethod
     def from_array(cls, array: list[int | float]) -> "Quaternion":
         return cls(*array)
+
+    def conjugate(self) -> "Quaternion":
+        """Return the conjugate of this quaternion."""
+        return Quaternion(self.scalar, -self.i, -self.j, -self.k)
 
 
 def product(p: Quaternion, q: Quaternion) -> Quaternion:
