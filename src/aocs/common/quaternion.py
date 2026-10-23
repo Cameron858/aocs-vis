@@ -15,6 +15,12 @@ class Quaternion:
         self.j = j
         self.k = k
 
+    def __repr__(self) -> str:
+        return (
+            f"Quaternion(scalar={self.scalar!r}, i={self.i!r}, "
+            f"j={self.j!r}, k={self.k!r})"
+        )
+
     def __iter__(self) -> Iterator[int | float]:
         return iter((self.scalar, self.i, self.j, self.k))
 
