@@ -1,4 +1,5 @@
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
+from math import cos, hypot, sin
 from types import NotImplementedType
 
 
@@ -28,13 +29,26 @@ class Quaternion:
     def from_array(cls, array: list[int | float]) -> "Quaternion":
         return cls(*array)
 
+    @classmethod
+    def from_axis_angle(cls, theta: float, axis: Sequence[int | float]) -> "Quaternion":
+        """Create a rotation quaternion from an angle in radians and an axis."""
+        if len(axis) != 3:
+            raise ValueError("The rotation axis must have exactly three components.")
+
+        x, y, z = axis
+        axis_length = hypot(x, y, z)
+        if axis_length == 0:
+            raise ValueError("The rotation axis must be non-zero.")
+
+        half_theta = theta / 2
+        scale = sin(half_theta) / axis_length
+        return cls(cos(half_theta), x * scale, y * scale, z * scale)
+
     def conjugate(self) -> "Quaternion":
         """Return the conjugate of this quaternion."""
         return Quaternion(self.scalar, -self.i, -self.j, -self.k)
 
-    def __mul__(
-        self, other: object
-    ) -> "Quaternion | NotImplementedType":
+    def __mul__(self, other: object) -> "Quaternion | NotImplementedType":
         if not isinstance(other, Quaternion):
             return NotImplemented
 
